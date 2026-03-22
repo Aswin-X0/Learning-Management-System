@@ -13,7 +13,7 @@ RUN ./mvnw clean package -DskipTests
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-COPY --from=build /app/target/Brainstorm-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/Coursera-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 10000
 
