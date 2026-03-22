@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>User Enrollments | CourseRA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: radial-gradient(circle at top left, #8eb2e8 40%, #c6e5ef 60%, #c5ecf7 90%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .table th {
+            font-weight: 600;
+        }
+
+        .btn-primary,
+        .btn-danger {
+            border-radius: 0.6rem;
+            padding: 6px 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="glass-card p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <h2 class="fw-bold text-primary">User Enrollments</h2>
+
+                <div>
+                    <a th:href="@{/enrollments/add}" class="btn btn-primary me-2">
+                        Add Enrollment
+                    </a>
+
+                    <a th:href="@{/Coursera/home}" class="btn btn-outline-primary">
+                        Home
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Course Name</th>
+                            <th>Enrolled Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:if="${enrollments == null or #lists.isEmpty(enrollments)}">
+                            <td colspan="4" class="text-center text-muted">
+                                No enrollments found
+                            </td>
+                        </tr>
+
+                        <tr th:each="enrollment : ${enrollments}">
+                            <td th:text="${enrollment.id}"></td>
+                            <td th:text="${enrollment.courseName}"></td>
+                            <td th:text="${enrollment.enrolled}"></td>
+
+                            <td>
+                                <a class="btn btn-danger btn-sm"
+                                    th:href="@{/enrollments/delete/{id}(id=${enrollment.id}, userId=${userId})}">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - CourseRA..</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <div class="flex min-h-screen">
+    
+    <!-- Sidebar -->
+    <aside class="w-64 bg-indigo-700 text-white flex flex-col">     
+      <div class="p-6 text-2xl font-bold border-b border-indigo-500">
+        CourseRA. Admin
+      </div>
+      <nav class="flex-1 p-4 space-y-2">
+        <a href="#" class="block px-4 py-2 rounded bg-indigo-800">Dashboard</a>
+      </nav>
+      <div class="p-4 border-t border-indigo-500">
+        <a th:href="@{/Coursera/home}" class="block px-4 py-2 rounded bg-red-500 hover:bg-red-600 text-center">HOME PAGE</a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      
+      <!-- Topbar -->
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-800">Admin Dashboard</h1>
+          <p class="text-gray-500">Welcome back, Admin</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <input type="text" placeholder="Search..." class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          <div class="w-10 h-10 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+            A
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-5 rounded-xl shadow">
+          <h2 class="text-gray-500 text-sm">Total Users</h2>
+          <p class="text-3xl font-bold text-indigo-700 mt-2">1,240</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl shadow">
+          <h2 class="text-gray-500 text-sm">Total Courses</h2>
+          <p class="text-3xl font-bold text-green-600 mt-2">10</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl shadow">
+          <h2 class="text-gray-500 text-sm">Course Enrollments</h2>
+          <p class="text-3xl font-bold text-yellow-500 mt-2">100</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl shadow">
+          <h2 class="text-gray-500 text-sm">Completions Score</h2>
+          <p class="text-3xl font-bold text-red-500 mt-2">78%</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="bg-white p-6 rounded-xl shadow mb-8">
+        <h2 class="text-xl font-semibold mb-4">User Module</h2>
+        <div class="flex flex-wrap gap-4">
+          <a th:href="@{/Coursera/userlist}" class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700">User List</a>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-xl shadow mb-8">
+        <h2 class="text-xl font-semibold mb-4">Course Module</h2>
+        <div class="flex flex-wrap gap-4">
+          <a th:href="@{/courses/list}" class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700">Course list</a>
+          <a th:href="@{/courses/create}" class="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700">Course Creation</a>
+      </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow mb-8">
+        <h2 class="text-xl font-semibold mb-4">Enrollment Module</h2>
+        <div class="flex flex-wrap gap-4">
+          <a th:href="@{/enroll/enrollmentlist}" class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700">Enrollment list</a>
+        </div>
+      </div>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>

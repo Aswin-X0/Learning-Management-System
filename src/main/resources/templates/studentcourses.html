@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Browse Courses</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .search-container {
+            max-width: 1000px;
+            margin: 25px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .search-form input,
+        .search-form button {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .search-form button {
+            background: #2a5298;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background: #1e3c72;
+        }
+
+        .courses-wrapper {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 10px 20px 40px;
+        }
+
+        .courses-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 10px;
+            scroll-behavior: smooth;
+        }
+
+        .course-card {
+            min-width: 280px;
+            max-width: 280px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            flex: 0 0 auto;
+            transition: transform 0.2s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-image {
+            height: 160px;
+            background: #e9eefc;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .course-image img,
+        .course-image video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .course-placeholder {
+            color: #1e3c72;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .course-content {
+            padding: 18px;
+        }
+
+        .course-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .course-info {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-view {
+            background: #e9eefc;
+            color: #1e3c72;
+        }
+
+        .btn-enroll {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-enroll:hover {
+            background: #218838;
+        }
+
+        .empty-message {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Explore Courses</h1>
+    <p>Search by course name, instructor, or topic</p>
+</div>
+
+<div class="search-container">
+    <form th:action="@{/search/courses}" method="get" class="search-form">
+        <input type="text" name="name" placeholder="Search by course name">
+        <input type="text" name="instructor" placeholder="Search by instructor">
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<div th:if="${success}" 
+     style="max-width:1000px; margin:20px auto; padding:12px; background:#d4edda; color:#155724; border-radius:8px;">
+    <span th:text="${success}"></span>
+</div>
+
+<div th:if="${error}" 
+     style="max-width:1000px; margin:20px auto; padding:12px; background:#f8d7da; color:#721c24; border-radius:8px;">
+    <span th:text="${error}"></span>
+</div>
+
+<div class="courses-wrapper">
+    <div th:if="${courses != null and !courses.isEmpty()}" class="courses-carousel">
+        <div class="course-card" th:each="course : ${courses}">
+            
+            <div class="course-image">
+                <img th:if="${courseMediaMap[course.id] != null and courseMediaMap[course.id].mediaType == 'IMAGE'}"
+                     th:src="${courseMediaMap[course.id].fileUrl}"
+                     alt="Course Image">
+
+                <video controls
+                       th:if="${courseMediaMap[course.id] != null and courseMediaMap[course.id].mediaType == 'VIDEO'}">
+                    <source th:src="${courseMediaMap[course.id].fileUrl}">
+                </video>
+
+                <div th:if="${courseMediaMap[course.id] == null}"
+                     class="course-placeholder">
+                    Course
+                </div>
+            </div>
+
+            <div class="course-content">
+                <div class="course-title" th:text="${course.name}">Course Name</div>
+                <div class="course-info">
+                    <strong>Instructor:</strong>
+                    <span th:text="${course.instructor}">Instructor Name</span>
+                </div>
+                <div class="course-info">
+                    <strong>Topic:</strong>
+                    <span th:text="${course.name}">Topic</span>
+                </div>
+                <div class="course-info">
+                    <strong>Description:</strong>
+                    <span th:text="${course.description}">Course description</span>
+                </div>
+
+                <div class="course-actions">
+                    <a class="btn btn-view"
+                       th:href="@{/student/courses/{id}(id=${course.id})}">
+                        View
+                    </a>
+
+                    <form th:action="@{/enroll/course}" method="post">
+                        <input type="hidden" name="courseId" th:value="${course.id}">
+                        <button type="submit" class="btn btn-enroll">Enroll</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${courses == null or courses.isEmpty()}" class="empty-message">
+        No courses found.
+    </div>
+</div>
+
+</body>
+</html>
