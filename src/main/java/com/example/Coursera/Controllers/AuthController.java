@@ -1,6 +1,7 @@
 package com.example.Coursera.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import com.example.Coursera.Model.User;
 import com.example.Coursera.Service.Authservice;
 import com.example.Coursera.Service.Userservice;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -58,16 +60,35 @@ public class AuthController {
 
     @PostMapping("/login")
     @PreAuthorize("permitAll()")
-    public String signIn(@RequestParam String username, @RequestParam String password,HttpSession session, Model model) {
-        try {
-            String jwt = authService.SignIn(username, password);
-            session.setAttribute("jwt", jwt);
-            User user = userservice.getUserbyUsername(username);
-            session.setAttribute("loggedInUser", user);
-            return "redirect:/Coursera/home";
-        } catch (Exception e) {
-            model.addAttribute("error", "Invalid username or password");
-            return "Login";
-        }
+    public String signIn(@RequestParam String username,
+                     @RequestParam String password,
+                     HttpServletResponse response,
+                     HttpSession session,
+                     Model model) {
+
+    try {
+        String jwt = authService.SignIn(username, password);
+
+        User user = userservice.getUserbyUsername(username);
+
+        session.setAttribute("user", user);
+
+
+        ResponseCookie cookie = ResponseCookie.from("jwt", jwt)
+                .httpOnly(true)
+                .path("/")
+                .maxAge(24 * 60 * 60)
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        return "redirect:/Coursera/home";
+
+    } catch (Exception e) {
+        model.addAttribute("error", "Invalid username or password");
+        return "Login";
+    }
 }
 }
+

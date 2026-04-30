@@ -24,15 +24,12 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/Coursera/home").permitAll()
-                .requestMatchers("/courses/**").permitAll()
-                .requestMatchers("/Coursera/signup").permitAll()
-                .requestMatchers("/Coursera/login").permitAll()
+                .requestMatchers("/Coursera/signup" , "/Coursera/login" ).permitAll()
                 .requestMatchers("/courses/userlist").permitAll()
                 .requestMatchers("/courses/**").permitAll()
                 .requestMatchers("/Media/**").permitAll()
                 .requestMatchers("/enroll/**").permitAll()
                 .requestMatchers("/search/**").permitAll()
-               
 
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 
